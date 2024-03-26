@@ -9,14 +9,14 @@ const connectToDB = async () => {
             await sleep(delay);
         }
         const dbConfig = {
-            host: process.env.QUESTFINDER_DB_HOST,
-            port: process.env.QUESTFINDER_DB_PORT,
-            user: process.env.QUESTFINDER_DB_USER,
-            password: process.env.QUESTFINDER_DB_PSWD,
-            database: process.env.QUESTFINDER_DB_NAME,
+            host: process.env.BOOKPACK_DB_HOST,
+            port: process.env.BOOKPACK_DB_PORT,
+            user: process.env.BOOKPACK_DB_USER,
+            password: process.env.BOOKPACK_DB_PSWD,
+            database: process.env.BOOKPACK_DB_NAME,
             timezone: 'Z',
         };
-        if (process.env.QUESTFINDER_DB_SSL == 'true') {
+        if (process.env.BOOKPACK_DB_SSL == 'true') {
             dbConfig.ssl = {
                 rejectUnauthorized: true,
             };

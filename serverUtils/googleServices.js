@@ -1,4 +1,4 @@
-const googleMapsAPIKey = process.env.QUESTFINDER_MAPS_APIKEY;
+const googleMapsAPIKey = process.env.BOOKPACK_MAPS_APIKEY;
 global.googleMapsClient = require('@google/maps').createClient({
     key: googleMapsAPIKey,
     Promise: Promise
@@ -6,13 +6,13 @@ global.googleMapsClient = require('@google/maps').createClient({
 
 // need to test if it works, or else kill the server
 if (global.APP_ENVIRONMENT === 'production') {
-    global.googleMapsClient.geocode({address: 'Easter Island'})
-    .asPromise()
-    .then((response) => {
-        console.log('google api works fine');
-    })
-    .catch((err) => {
-        console.error(err);
-        throw err;
-    });
+    global.googleMapsClient.geocode({ address: 'Easter Island' })
+        .asPromise()
+        .then((response) => {
+            console.log('google api works fine');
+        })
+        .catch((err) => {
+            console.error(err);
+            throw err;
+        });
 }

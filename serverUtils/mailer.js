@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
-const email = process.env.QUESTFINDER_EMAIL_ADDRESS;
-const password = process.env.QUESTFINDER_EMAIL_PASSWORD;
+const email = process.env.BOOKPACK_EMAIL_ADDRESS;
+const password = process.env.BOOKPACK_EMAIL_PASSWORD;
 
 global.sendMail = (sendTo, subject, html) => {
     try {

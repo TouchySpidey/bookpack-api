@@ -10,7 +10,7 @@ require('./apiAuthenticator');
 require('./initFirebase')();
 
 // google services
-require('./googleServices');
+// require('./googleServices');
 
 // mailer
 require('./mailer');
