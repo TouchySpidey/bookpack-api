@@ -54,10 +54,13 @@ router.get('/:adUID', authenticate, async (req, res) => {
         const adResponse = {};
         const [adRows] = await global.db.execute(`SELECT * FROM bp_ads WHERE UID = ?`, [adUID]);
         if (!adRows.length) return res.status(404).send("Ad not found");
-
         adResponse.ad = adRows[0];
-        const [userRows] = await global.db.execute(`SELECT * FROM users WHERE UID = ?`, [adResponse.ad.userUID]);
 
+        const [bookRows] = await global.db.execute(`SELECT * FROM bp_books WHERE isbn = ?`, [adResponse.ad.bookCode]);
+        if (!bookRows.length) return res.status(500).send("Internal Server Error");
+        adResponse.book = bookRows[0];
+
+        const [userRows] = await global.db.execute(`SELECT UID, nickname FROM users WHERE UID = ?`, [adResponse.ad.userUID]);
         if (!userRows.length) return res.status(500).send("Internal Server Error");
 
         const [reviewRows] = await global.db.execute(`SELECT bp_reviews.*, reviewers.nickname
