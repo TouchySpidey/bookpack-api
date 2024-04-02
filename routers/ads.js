@@ -7,6 +7,24 @@ const path = require('path');
 const sharp = require('sharp');
 
 router.post('/save', authenticate, global.multerUpload.array('pics'), async (req, res) => {
+    /* #swagger.tags = ['ads']
+    #swagger.summary = 'Save an ad in the database'
+    #swagger.description = 'This saves ads in the database, the POST body is very similar to the db's table's structure. This will also notify users that have active searches that match this ad.  This post is done with multipart/form-data because of the images'
+    security via apikey in bearer authorization header
+    #swagger.security = [{
+        "Bearer": []
+    }]
+    #swagger.requestBody = {
+        required: true,
+        content: {
+            'multipart/form-data': {
+                schema: {
+                    $ref: "#/components/schemas/AdSave"
+                }
+            }
+        }
+    } */
+
     try {
         const userUID = req.user.UID;
         const adData = await adIO.buildAdObject(req.body);
@@ -47,6 +65,19 @@ router.post('/save', authenticate, global.multerUpload.array('pics'), async (req
 });
 
 router.get('/:adUID', authenticate, async (req, res) => {
+    /* #swagger.tags = ['ads']
+    #swagger.summary = 'Get an ad by its UID'
+    #swagger.description = 'This gets an ad by its UID, and returns the ad and infos about it'
+    #swagger.parameters['adUID'] = { description: 'The UID of the ad', in: 'path', required: true, type: 'string' }
+    security via apikey in bearer authorization header
+    #swagger.security = [{
+        "Bearer": []
+    }]
+    #swagger.responses[200] = {
+        schema: {
+            $ref: "#/components/schemas/Ad"
+        }
+    } */
     try {
         const { adUID } = req.params;
         if (!adUID) return res.status(400).send("Bad Request");
@@ -89,10 +120,40 @@ router.get('/:adUID', authenticate, async (req, res) => {
 });
 
 router.get('/:adUID/thumbnail/:picName', async (req, res) => {
+    /* #swagger.tags = ['ads']
+    #swagger.summary = 'Get a thumbnail of an ad by its UID and pic name'
+    #swagger.description = 'This gets a thumbnail of an ad by its UID and pic name'
+    #swagger.parameters['adUID'] = { description: 'The UID of the ad', in: 'path', required: true, type: 'string' }
+    #swagger.parameters['picName'] = { description: 'The name of the pic', in: 'path', required: true, type: 'string' }
+    #swagger.responses[200] = {
+        description: 'The thumbnail of the pic',
+        content: {
+            'image/*': {
+                schema: {
+                    type: 'file'
+                }
+            }
+        }
+    } */
     return getPic(req, res, 'thumbnails');
 });
 
 router.get('/:adUID/pic/:picName', async (req, res) => {
+    /* #swagger.tags = ['ads']
+    #swagger.summary = 'Get a pic of an ad by its UID and pic name'
+    #swagger.description = 'This gets a pic of an ad by its UID and pic name'
+    #swagger.parameters['adUID'] = { description: 'The UID of the ad', in: 'path', required: true, type: 'string' }
+    #swagger.parameters['picName'] = { description: 'The name of the pic', in: 'path', type: 'string' }
+    #swagger.responses[200] = {
+        description: 'The pic',
+        content: {
+            'image/*': {
+                schema: {
+                    type: 'file'
+                }
+            }
+        }
+    } */
     return getPic(req, res, 'originals');
 });
 
@@ -111,21 +172,6 @@ const getPic = (req, res, type) => {
         return res.status(500).send("Internal Server Error");
     }
 }
-
-router.get('/:adUID/pics', async (req, res) => {
-    try {
-        const { adUID } = req.params;
-        if (!adUID) return res.status(400).send("Bad Request");
-
-        const pics = getPics(adUID);
-        if (!pics.length) return res.status(404).send("Ad not found");
-        // serve the first pic
-        return res.sendFile(path.join('uploads', 'ads', 'originals', adUID, pics[0]));
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send("Internal Server Error");
-    }
-});
 
 function newAdForSearchMail(adData, matchingSearches) {
     const { adUID, info, qualityCondition, price, availableForShipping, book } = adData;

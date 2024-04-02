@@ -142,3 +142,6 @@ test
 
 # uploads
 uploads
+
+# swagger autogen
+docs/swagger.json

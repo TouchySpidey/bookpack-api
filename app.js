@@ -35,6 +35,9 @@ require('./serverUtils/_serverUtils')(app, server);
 
 app.use(require('./routers/routers'));
 
+// docs
+require('./docs/docs')(app);
+
 const port = global.APP_ENVIRONMENT == 'production' ? (process.env.PORT ?? null) : 8080;
 
 server.listen(port, () => {

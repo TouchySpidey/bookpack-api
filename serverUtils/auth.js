@@ -5,35 +5,6 @@ const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const { ACCESS_TOKEN_TTL, REFRESH_TOKEN_TTL } = global;
 
-/*
-signup:
-    * check if email exists
-        * if so, return 409 and exit
-    * create verification token
-    * add to db verification token, email, hashed password, nickname, createdOn
-    * send email with verification token
-    * return 201
-
-signup verify:
-    * find row with verification token in table
-        * if not found, return 404 and exit
-    * check expiration
-        * if expired, return 410 and exit
-    * create user
-    * remove row
-    * return 201
-
-login:
-    * check if email exists
-        * if not, return 404 and exit
-    * compare password
-    * create jwt
-    * return 200
-
-refresh3
-
-*/
-
 router.post('/register', async (req, res) => {
     try {
         const { email, password, nickname } = req.body;
